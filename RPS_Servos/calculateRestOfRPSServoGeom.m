@@ -1,5 +1,5 @@
 function geometry = calculateRestOfRPSServoGeom(geometry)
-% U,sing global constants which define Stewart Platform geometry, set up
+% U,,sing global constants which define Stewart Platform geometry, set up
 % Stewart platform (calculate vector locations of platform connection
 % points, as well as servo angles
     geometry.servo_pos_b = [geometry.base_rad 0 0; %bottom two servos
