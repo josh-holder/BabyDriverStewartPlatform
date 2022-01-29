@@ -37,7 +37,8 @@ function alphas = findRPSServoAngles(geometry,plat_trans,plat_rot)
         plane_vector_2 = cross(plane_vector,curr_servo_pos_b);
         plane_normal = cross(plane_vector,plane_vector_2);
         
-        dot_prod = dot(-arm_length_b,plane_normal);
+        dot_prod = dot(-arm_length_b,plane_normal)
+        norm(arm_length_b);
         
         %Only add if the configurations satisfies all conditions
         if abs(norm(arm_length_b)-geometry.s) >= geometry.s*.001
@@ -46,7 +47,7 @@ function alphas = findRPSServoAngles(geometry,plat_trans,plat_rot)
         if abs(dot_prod) > .001
             error("Plane Error: requested configuration has long leng out of plane")
         end
-        if (abs(alpha) > 90)
+        if (abs(alpha) > 120)
             error("Angle Error: requested angle goes below horizontal, "+alpha)
         end
             
