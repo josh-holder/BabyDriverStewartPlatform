@@ -16,4 +16,5 @@ function geometry = calculateRestOfRPSServoGeom(geometry)
                             240];
 
     geometry.servo_arm_end_unrotated = [0; geometry.a; 0];
+    %hi
 end
