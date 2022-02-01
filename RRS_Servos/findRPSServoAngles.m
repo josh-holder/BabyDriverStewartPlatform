@@ -7,7 +7,7 @@ function alphas = findRPSServoAngles(geometry,plat_trans,plat_rot)
 
     plat_pos_b = plat_trans+Rp_b*geometry.plat_pos_p;
                
-    alphas = [];
+    alphas = [];    
     plane_vector = [0 0 1];
     for l_index = 1:size(geometry.servo_pos_b,2)
         %grab vectors
@@ -37,15 +37,17 @@ function alphas = findRPSServoAngles(geometry,plat_trans,plat_rot)
         plane_vector_2 = cross(plane_vector,curr_servo_pos_b);
         plane_normal = cross(plane_vector,plane_vector_2);
         
-        dot_prod = dot(-arm_length_b,plane_normal)
+        dot_prod = dot(-arm_length_b,plane_normal);
         norm(arm_length_b);
         
         %Only add if the configurations satisfies all conditions
         if abs(norm(arm_length_b)-geometry.s) >= geometry.s*.001
             error("Length Error: requested configuration yields impossible leg length "+norm(arm_length_b))
         end
-        if abs(dot_prod) > .001
+        if (abs(dot_prod) > 1e-14) && (l_index ~= 1)
             error("Plane Error: requested configuration has long leng out of plane")
+        elseif (abs(dot_prod) > 1e-14) && (l_index == 1)
+            disp("out of plane, but allowed b/c of universal joint")
         end
         if (abs(alpha) > 120)
             error("Angle Error: requested angle goes below horizontal, "+alpha)

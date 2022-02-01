@@ -11,11 +11,8 @@ geometry.plat_rad = .508/2; %geometry.base_rad;
 geometry = calculateRestOfRPSServoGeom(geometry);
 
 %% RPS (w servo) PLATFORM INPUTS
-plat_rot = [0 0 0]; %theta (y axis) 15% grade or 8.5308 deg (RPY)
-plat_trans = [0 0 geometry.s+geometry.a/2]'; %desired translation of COM
-
-
-findRPSServoAngles(geometry,plat_trans,[0 8.5 0])
+plat_rot = [0 8.5308 0]; %theta (y axis) 15% grade or 8.5308 deg (RPY)
+plat_trans = [0 0 geometry.s+geometry.a-0.1]'; %desired translation of COM
 
 %% Range of Motion parameters
 
@@ -84,6 +81,6 @@ g = 9.81;
 t= 0.25;
 % v = sqrt(2*a*geometry.leg_extend/2)/.0254
 v = a*t;
-% F = 1/2*25/3*v^2/(geometry.leg_extend/2)
-% 
-% Ftot = (25/3)/9.81*v/(v/a)+25/3*9.81
+F = 1/2*25/3*v^2/(geometry.leg_extend/2)
+
+Ftot = (25/3)/9.81*v/(v/a)+25/3*9.81
