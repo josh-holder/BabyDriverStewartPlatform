@@ -11,8 +11,8 @@ geometry.plat_rad = .508/2; %geometry.base_rad;
 geometry = calculateRestOfRPSServoGeom(geometry);
 
 %% RPS (w servo) PLATFORM INPUTS
-plat_rot = [0 8.5308 0]; %theta (y axis) 15% grade or 8.5308 deg (RPY)
-plat_trans = [0 0 geometry.s+geometry.a-0.1]'; %desired translation of COM
+plat_rot = [0 0 0]; %theta (y axis) 15% grade or 8.5308 deg (RPY)
+plat_trans = [0 0 geometry.s+geometry.a-0.05]'; %desired translation of COM
 
 
 alphas = findRPSServoAngles(geometry,plat_trans,plat_rot)
