@@ -46,7 +46,7 @@ theta_change = (thetas(end)-thetas(1))*pi/180;
 position_change = (positions(end)-positions(1));
 m = 20;
 v_final = zdots(end);
-num_motors = 3;
+num_motors = 2;
 
 avg_torque = ((.5*m*v_final^2)+m*9.81*position_change)/num_motors/theta_change;
 energy_linear = (.5*m*v_final^2)+m*9.81*position_change;

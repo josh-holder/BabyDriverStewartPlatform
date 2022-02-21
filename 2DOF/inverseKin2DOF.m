@@ -1,5 +1,8 @@
 %Inverse kinematics for 2DOF custom platform
-function angles = inverseKin2DOF(a,s,base_rad,roll,z,plot)
+function [thetas,phis] = inverseKin2DOF(a,s,base_rad,roll,z,plot)
+    %input roll in radians
+    %returns angles of the bottom link in degrees (thetas)
+    %angles of the top link in degrees (phis)
     Rp_b = [1 0 0;
             0 cosd(roll) -sind(roll);
             0 sind(roll) cosd(roll)];
@@ -7,7 +10,7 @@ function angles = inverseKin2DOF(a,s,base_rad,roll,z,plot)
     plat_trans = [0; 0; z];
         
     servo_pos_b = [0 base_rad 0;
-                    0 -base_rad 0]';
+                   0 -base_rad 0]';
     
     plat_pos_p = [0 base_rad 0;
                   0 -base_rad 0]';
@@ -21,7 +24,8 @@ function angles = inverseKin2DOF(a,s,base_rad,roll,z,plot)
     %convert platform positions to base frame
     plat_pos_b = plat_trans + Rp_b*plat_pos_p;
     
-    angles = [];
+    thetas = [];
+    phis = [];
     
     for l_index = 1:size(servo_pos_b,2)
         curr_servo_pos_b = servo_pos_b(:,l_index); %servo pos vector
@@ -35,8 +39,12 @@ function angles = inverseKin2DOF(a,s,base_rad,roll,z,plot)
         N = 2*a*(cosd(beta)*(curr_plat_pos_b(1)-curr_servo_pos_b(1)) + ...
             sind(beta)*(curr_plat_pos_b(2)-curr_servo_pos_b(2)));
         
-        angle = asind(L/sqrt(M^2+N^2))-atand(N/M);
-        angles = [angles angle];
+        theta = asind(L/sqrt(M^2+N^2))-atand(N/M);
+        thetas = [thetas theta];
+        
+        %use law of cosines to find phi, angle of upper link
+        phi = acosd((norm(length_b)^2-a^2-s^2)/(-2*a*s)) - theta;
+        phis = [phis phi];
     end
 
     %% Plot
@@ -70,7 +78,7 @@ function angles = inverseKin2DOF(a,s,base_rad,roll,z,plot)
                 [curr_servo_pos_b(2) curr_servo_pos_b(2)+length_b(2)],...
                 [curr_servo_pos_b(3) curr_servo_pos_b(3)+length_b(3)],'--g')
 
-            alpha = angles(l_index);
+            alpha = thetas(l_index);
 
             gamma = servo_arm_end_gammas(l_index);
             gamma_rot_matrix = [cosd(gamma) -sind(gamma) 0;
